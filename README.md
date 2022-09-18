@@ -4,7 +4,7 @@
 </div> 
 
 <div align="center">
-  <img alt="releases" src="https://img.shields.io/badge/author-79E-blue.svg?style=flat-square&longCache=true">
+  <img alt="releases" src="https://img.shields.io/badge/author-79W-blue.svg?style=flat-square&longCache=true">
   <a href="https://nodejs.org" target="_blank" rel="noopener noreferrer">
     <img alt="node" src="https://img.shields.io/badge/node-%3E=10.9.0-green.svg?style=flat-square&logo=Node.js&longCache=true">
   </a>
@@ -38,7 +38,7 @@ yarn add uni-cloud-storage
 浏览器 ( script )
 
 ```javascript
-<script src="https://cdn.jsdelivr.net/gh/79E/uni-cloud-storage@master/dist/index.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/79W/uni-cloud-storage@master/dist/index.js"></script>
 ```
 
 ### 使用👋
