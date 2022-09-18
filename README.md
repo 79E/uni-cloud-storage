@@ -62,7 +62,7 @@ unics.upload(file,fileName?):Promise
 
 ```javascript
 // 导入包
-<script src="https://cdn.jsdelivr.net/gh/79E/uni-cloud-storage@master/dist/index.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/79W/uni-cloud-storage@master/dist/index.js"></script>
 <script>
 	  // 初始化(两个必传参数)
 		const unics = new UniCloudStorage(spaceId, clientSecret);
@@ -114,4 +114,4 @@ import UniCloudStorage from 'uni-cloud-storage'
 
 ### License📖
 
-Lexical is [MIT licensed](https://github.com/79E/uni-cloud-storage/blob/master/LICENSE).
+Lexical is [MIT licensed](https://github.com/79W/uni-cloud-storage/blob/master/LICENSE).
