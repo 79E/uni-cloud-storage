@@ -23,13 +23,13 @@ if(isBrowser){
       file: './dist/index.js',
       name: 'UniCloudStorage',
       isBrowser: true,
-      external: ['axios','form-data'],
+      external: ['axios','form-data','fs'],
     },
     {
       format: 'esm',
       file: './dist/index.esm.js',
       isBrowser: true,
-      external: ['axios','form-data'],
+      external: ['axios','form-data','fs'],
     },
   ]
 }

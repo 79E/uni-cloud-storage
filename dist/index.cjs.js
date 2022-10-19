@@ -21758,14 +21758,16 @@ function formDataHandle(obj, file) {
 
 var _uniCloudStorage_instances, _uniCloudStorage_getAccessToken, _uniCloudStorage_creatFileName, _uniCloudStorage_uploadFile, _uniCloudStorage_checkFile;
 class uniCloudStorage {
-    constructor(spaceId, clientSecret) {
+    constructor(spaceId, clientSecret, baseHost) {
         _uniCloudStorage_instances.add(this);
         this.spaceId = spaceId;
         this.clientSecret = clientSecret;
+        this.baseHost = baseHost || 'https://api.bspapp.com';
     }
-    upload(file, fileName = '') {
+    upload(file, fileName) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!file.name && !fileName) {
+            const name = fileName || file.name;
+            if (!name) {
                 return {
                     success: false,
                     error: {
@@ -21779,7 +21781,7 @@ class uniCloudStorage {
                 return tokenData;
             }
             const { accessToken } = tokenData.data;
-            const fileInfo = yield __classPrivateFieldGet(this, _uniCloudStorage_instances, "m", _uniCloudStorage_creatFileName).call(this, file.name || fileName, accessToken);
+            const fileInfo = yield __classPrivateFieldGet(this, _uniCloudStorage_instances, "m", _uniCloudStorage_creatFileName).call(this, name, accessToken);
             if (!fileInfo.success) {
                 return fileInfo;
             }
@@ -21814,7 +21816,7 @@ _uniCloudStorage_instances = new WeakSet(), _uniCloudStorage_getAccessToken = fu
             spaceId: this.spaceId,
             timestamp: Date.now(),
         };
-        const result = yield axios.post('https://api.bspapp.com/client', `{\"method\":\"serverless.auth.user.anonymousAuthorize\",\"params\":\"{}\",\"spaceId\":\"${this.spaceId}\",\"timestamp\":${data.timestamp}}`, {
+        const result = yield axios.post(this.baseHost + '/client', `{\"method\":\"serverless.auth.user.anonymousAuthorize\",\"params\":\"{}\",\"spaceId\":\"${this.spaceId}\",\"timestamp\":${data.timestamp}}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'x-serverless-sign': sign(data, this.clientSecret),
@@ -21834,7 +21836,7 @@ _uniCloudStorage_instances = new WeakSet(), _uniCloudStorage_getAccessToken = fu
             timestamp: Date.now(),
             token: accessToken,
         };
-        const result = yield axios.post('https://api.bspapp.com/client', JSON.stringify(options), {
+        const result = yield axios.post(this.baseHost + '/client', JSON.stringify(options), {
             headers: {
                 'x-basement-token': options.token,
                 'x-serverless-sign': sign(options, this.clientSecret),
@@ -21885,7 +21887,7 @@ _uniCloudStorage_instances = new WeakSet(), _uniCloudStorage_getAccessToken = fu
             token: accessToken,
         };
         const result = yield axios({
-            url: 'https://api.bspapp.com/client',
+            url: this.baseHost + '/client',
             data: options,
             method: 'post',
             responseType: 'json',
