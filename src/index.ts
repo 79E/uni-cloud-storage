@@ -1,19 +1,21 @@
 'use strict';
-
+import fs from 'fs';
 import Axios from 'axios';
 import { sign,StringObject } from './utils/encryption';
 import formDataHandle from './utils/form_data_handle';
 
 class uniCloudStorage{
 
-    spaceId:string
-    clientSecret:string
+    spaceId:string;
+    clientSecret:string;
+    baseHost:string;
 
-    constructor( spaceId:string, clientSecret:string){
+    constructor( spaceId:string, clientSecret:string,baseHost?:string){
         this.spaceId = spaceId;
         this.clientSecret = clientSecret;
+        this.baseHost = baseHost || 'https://api.bspapp.com';
     }
-    async upload(file:File,fileName = ''):
+    async upload(file:File | fs.ReadStream,fileName?:string):
         Promise<{ 
             success: boolean; 
             status?: number | undefined; 
@@ -30,7 +32,8 @@ class uniCloudStorage{
             } | undefined; 
         }
         >{
-        if(!file.name && !fileName){
+        const name = fileName || (file as File).name;
+        if(!name){
             return {
                 success:false,
                 error:{
@@ -44,7 +47,7 @@ class uniCloudStorage{
             return tokenData
         }
         const { accessToken } = tokenData.data
-        const fileInfo = await this.#creatFileName(file.name || fileName,accessToken)
+        const fileInfo = await this.#creatFileName(name,accessToken)
         if(!fileInfo.success){
             return fileInfo
         }
@@ -81,7 +84,7 @@ class uniCloudStorage{
             spaceId: this.spaceId,
             timestamp: Date.now(),
         };
-        const result = await Axios.post('https://api.bspapp.com/client',
+        const result = await Axios.post(this.baseHost+'/client',
         `{\"method\":\"serverless.auth.user.anonymousAuthorize\",\"params\":\"{}\",\"spaceId\":\"${this.spaceId}\",\"timestamp\":${data.timestamp}}`   
         ,{
             headers: {
@@ -105,7 +108,7 @@ class uniCloudStorage{
             token: accessToken,
         };
         const result = await Axios.post(
-            'https://api.bspapp.com/client',
+            this.baseHost + '/client',
             JSON.stringify(options),
             {
                 headers: {
@@ -121,7 +124,7 @@ class uniCloudStorage{
     }
 
     // 上传文件
-    async #uploadFile(file:File,predata:{[key:string]:string}){
+    async #uploadFile(file:File | fs.ReadStream,predata:{[key:string]:string}){
         const url = 'https://' + predata.host + '/';
         const options = {
             "Cache-Control":"max-age=2592000",
@@ -166,7 +169,7 @@ class uniCloudStorage{
         };
         const result = await Axios(
         {
-            url:'https://api.bspapp.com/client',
+            url:this.baseHost + '/client',
             data: options,
             method:'post',
             responseType:'json',

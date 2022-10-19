@@ -1,9 +1,12 @@
+/// <reference types="node" />
+import fs from 'fs';
 declare class uniCloudStorage {
     #private;
     spaceId: string;
     clientSecret: string;
-    constructor(spaceId: string, clientSecret: string);
-    upload(file: File, fileName?: string): Promise<{
+    baseHost: string;
+    constructor(spaceId: string, clientSecret: string, baseHost?: string);
+    upload(file: File | fs.ReadStream, fileName?: string): Promise<{
         success: boolean;
         status?: number | undefined;
         error?: {

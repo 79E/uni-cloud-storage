@@ -1,7 +1,9 @@
+/// <reference types="node" />
+import fs from 'fs';
 import FormData from 'form-data';
 export default function formDataHandle(obj: {
     [key: string]: string | Blob;
-}, file: File): Promise<{
+}, file: File | fs.ReadStream): Promise<{
     data: FormData | string | number;
     headers: {
         [key: string]: string | Blob;

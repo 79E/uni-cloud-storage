@@ -1,10 +1,11 @@
-
+'use strict';
+import fs from 'fs';
 import environment from './environment'
 import FormData from 'form-data'
 
 export default async function formDataHandle (
     obj: {[key:string]: string | Blob} ,
-    file : File,
+    file : File | fs.ReadStream,
 ):Promise<{ data: FormData | string | number;headers:{[key:string]: string | Blob} }>{
     if(environment().environment === 'web'){
         const formData = new FormData()
